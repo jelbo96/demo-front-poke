@@ -4,7 +4,10 @@ import { type PokemonDetailed } from '../types/pokemon.types';
 
 export default function PokemonRow({ pokemon }: { pokemon: PokemonDetailed }) {
   return (
-    <TableRow /*  style={{ backgroundColor: pokemon.color }} */>
+    <TableRow
+      className="text-left"
+      /*  style={{ backgroundColor: pokemon.color }} */
+    >
       <TableCell>
         <img
           src={pokemon.image}
