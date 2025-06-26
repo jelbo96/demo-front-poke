@@ -5,9 +5,12 @@ import PokemonTable from './features/pokedex/components/PokemonTable';
 import { Input } from './components/ui/input';
 import { Search as SearchIcon } from 'lucide-react';
 import { Button } from './components/ui/button';
+import { usePokemonStore } from './features/pokedex/hooks/usePokemonStore';
 
 function App() {
   const { pokemons, isLoading, error, setNickname } = usePokemons();
+
+  const reset = usePokemonStore((state) => state.reset);
   const [query, setQuery] = useState('');
 
   if (isLoading) return <p>Cargando...</p>;
@@ -24,6 +27,14 @@ function App() {
         className="mt-4"
       >
         Cambiar apodo de Pikachu
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={() => {
+          reset();
+        }}
+      >
+        Resetear Pokemons
       </Button>
 
       <div>

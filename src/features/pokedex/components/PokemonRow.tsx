@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { type PokemonDetailed } from '../types/pokemon.types';
 import { Trash as TrashIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { usePokemonNicknames } from '../hooks/usePokemonNicknames';
+import { usePokemonStore } from '../hooks/usePokemonStore';
 
 export default function PokemonRow({
   pokemon,
@@ -12,7 +12,7 @@ export default function PokemonRow({
   pokemon: PokemonDetailed;
   setSelectedPokemon?: (pokemon: PokemonDetailed) => void;
 }) {
-  const { getNickname, setNickname } = usePokemonNicknames();
+  const { getNickname, setNickname, removePokemon } = usePokemonStore();
   const nickName = getNickname(pokemon.name);
 
   return (
@@ -45,8 +45,9 @@ export default function PokemonRow({
       </TableCell>
       <TableCell>
         <Button
-          onClick={() => {
-            console.log('Eliminar Pokémon:', pokemon.name);
+          onClick={(e) => {
+            e.stopPropagation(); // evitar que seleccione fila si tienes selección
+            removePokemon(pokemon.name);
           }}
         >
           <TrashIcon className="w-4 h-4" />
