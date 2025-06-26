@@ -2,6 +2,8 @@ import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { type PokemonDetailed } from '../types/pokemon.types';
 import { Trash as TrashIcon } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { usePokemonNicknames } from '../hooks/usePokemonNicknames';
 
 export default function PokemonRow({
   pokemon,
@@ -10,6 +12,9 @@ export default function PokemonRow({
   pokemon: PokemonDetailed;
   setSelectedPokemon?: (pokemon: PokemonDetailed) => void;
 }) {
+  const { getNickname, setNickname } = usePokemonNicknames();
+  const nickName = getNickname(pokemon.name);
+
   return (
     <TableRow
       className="text-left"
@@ -27,7 +32,17 @@ export default function PokemonRow({
       <TableCell>{pokemon.experience}</TableCell>
       <TableCell>{pokemon.height}</TableCell>
       <TableCell>{pokemon.weight}</TableCell>
-      <TableCell>{(pokemon.weight / 10).toFixed(2)} kg</TableCell>
+      <TableCell className="pr-4">
+        <Input
+          type="text"
+          placeholder="Cambiar apodo"
+          className="w-full"
+          value={nickName || ''}
+          onChange={(e) => {
+            setNickname(pokemon.name, e.target.value);
+          }}
+        />
+      </TableCell>
       <TableCell>
         <Button
           onClick={() => {

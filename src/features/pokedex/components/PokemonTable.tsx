@@ -4,6 +4,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableCell,
 } from '@/components/ui/table';
 import PokemonRow from './PokemonRow';
 import { type PokemonDetailed } from '../types/pokemon.types';
@@ -80,6 +81,14 @@ export default function PokemonTable({ pokemons, query }: Props) {
               setSelectedPokemon={setSelectedPokemon}
             />
           ))}
+
+          {sortedPokemons.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={8} className="text-center">
+                No se encontró ningún Pokémon
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>

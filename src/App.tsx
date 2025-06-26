@@ -4,9 +4,10 @@ import { usePokemons } from './features/pokedex/hooks/usePokemons';
 import PokemonTable from './features/pokedex/components/PokemonTable';
 import { Input } from './components/ui/input';
 import { Search as SearchIcon } from 'lucide-react';
+import { Button } from './components/ui/button';
 
 function App() {
-  const { data, isLoading, error } = usePokemons();
+  const { pokemons, isLoading, error, setNickname } = usePokemons();
   const [query, setQuery] = useState('');
 
   if (isLoading) return <p>Cargando...</p>;
@@ -14,11 +15,21 @@ function App() {
 
   return (
     <div className="p-4 flex flex-col items-center  mx-auto bg-white shadow-md rounded-lg mt-1 bg-[#435490]">
+      <Button onClick={() => console.log('Button clicked!', pokemons)}>
+        Ver Pokémon
+      </Button>
+
+      <Button
+        onClick={() => setNickname('pikachu', 'Pika Pika')}
+        className="mt-4"
+      >
+        Cambiar apodo de Pikachu
+      </Button>
+
       <div>
         <div className="flex items-center justify-between pb-2 pt-8">
           <h1 className="text-3xl font-bold mb-4">Pokédex</h1>
 
-          {/* input buscador */}
           <div className="relative w-[250px] max-w-sm">
             <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
@@ -30,7 +41,9 @@ function App() {
           </div>
         </div>
 
-        {data && <PokemonTable pokemons={data} query={query.toLowerCase()} />}
+        {pokemons && (
+          <PokemonTable pokemons={pokemons} query={query.toLowerCase()} />
+        )}
       </div>
     </div>
   );
