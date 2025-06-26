@@ -8,27 +8,54 @@ import {
 import PokemonRow from './PokemonRow';
 import { type PokemonDetailed } from '../types/pokemon.types';
 import { useMemo, useState } from 'react';
+import clsx from 'clsx';
 
 type Props = {
   pokemons: PokemonDetailed[];
+  query?: string;
 };
 
-export default function PokemonTable({ pokemons }: Props) {
+const colorClassMap: Record<string, string> = {
+  red: 'bg-red-100',
+  blue: 'bg-blue-100',
+  green: 'bg-green-100',
+  yellow: 'bg-yellow-100',
+  purple: 'bg-purple-100',
+  pink: 'bg-pink-100',
+  brown: 'bg-yellow-200',
+  gray: 'bg-gray-100',
+  black: 'bg-gray-900 text-white',
+  white: 'bg-white border',
+};
+
+export default function PokemonTable({ pokemons, query }: Props) {
   const [sortAsc, setSortAsc] = useState(true);
+  const [selectedPokemon, setSelectedPokemon] =
+    useState<PokemonDetailed | null>(null);
+
+  const bgClass =
+    selectedPokemon && selectedPokemon.color
+      ? colorClassMap[selectedPokemon.color] || 'bg-neutral-100'
+      : 'bg-neutral-100';
 
   const sortedPokemons = useMemo(() => {
-    return [...pokemons].sort((a, b) => {
-      return sortAsc
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name);
-    });
-  }, [pokemons, sortAsc]);
+    return [...pokemons]
+      .sort((a, b) => {
+        return sortAsc
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      })
+      .filter((pokemon) => {
+        if (!query) return true;
+        return pokemon.name.toLowerCase().includes(query);
+      });
+  }, [pokemons, sortAsc, query]);
 
   return (
     <div className="w-full">
       <Table className="w-full table-fixed">
         <TableHeader>
-          <TableRow>
+          <TableRow className={clsx(bgClass, 'rounded p-4')}>
             <TableHead className="w-[10%]">Imagen</TableHead>
             <TableHead
               onClick={() => setSortAsc((prev) => !prev)}
@@ -40,13 +67,18 @@ export default function PokemonTable({ pokemons }: Props) {
             <TableHead className="w-[15%]">Experiencia</TableHead>
             <TableHead className="w-[10%]">Altura</TableHead>
             <TableHead className="w-[10%]">Peso</TableHead>
-            <TableHead className="w-[15%]">Campo Dinámico</TableHead>
+            <TableHead className="w-[15%]">Apodo</TableHead>
             <TableHead className="w-[10%]">Acciones</TableHead>
           </TableRow>
         </TableHeader>
+
         <TableBody>
           {sortedPokemons.map((p) => (
-            <PokemonRow key={p.name} pokemon={p} />
+            <PokemonRow
+              key={p.name}
+              pokemon={p}
+              setSelectedPokemon={setSelectedPokemon}
+            />
           ))}
         </TableBody>
       </Table>

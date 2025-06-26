@@ -1,12 +1,19 @@
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { type PokemonDetailed } from '../types/pokemon.types';
+import { Trash as TrashIcon } from 'lucide-react';
 
-export default function PokemonRow({ pokemon }: { pokemon: PokemonDetailed }) {
+export default function PokemonRow({
+  pokemon,
+  setSelectedPokemon,
+}: {
+  pokemon: PokemonDetailed;
+  setSelectedPokemon?: (pokemon: PokemonDetailed) => void;
+}) {
   return (
     <TableRow
       className="text-left"
-      /*  style={{ backgroundColor: pokemon.color }} */
+      onClick={() => setSelectedPokemon?.(pokemon)}
     >
       <TableCell>
         <img
@@ -22,7 +29,14 @@ export default function PokemonRow({ pokemon }: { pokemon: PokemonDetailed }) {
       <TableCell>{pokemon.weight}</TableCell>
       <TableCell>{(pokemon.weight / 10).toFixed(2)} kg</TableCell>
       <TableCell>
-        <Button>Ver</Button>
+        <Button
+          onClick={() => {
+            console.log('Eliminar Pokémon:', pokemon.name);
+          }}
+        >
+          <TrashIcon className="w-4 h-4" />
+          Eliminar
+        </Button>
       </TableCell>
     </TableRow>
   );
