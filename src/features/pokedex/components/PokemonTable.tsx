@@ -53,8 +53,8 @@ export default function PokemonTable({ pokemons, query }: Props) {
   }, [pokemons, sortAsc, query]);
 
   return (
-    <div className="w-full">
-      <Table className="w-full table-fixed">
+    <div className="overflow-x-auto w-full">
+      <Table className="min-w-[1000px] table-fixed">
         <TableHeader>
           <TableRow className={clsx(bgClass, 'rounded p-4')}>
             <TableHead className="w-[10%]">Imagen</TableHead>
@@ -64,7 +64,7 @@ export default function PokemonTable({ pokemons, query }: Props) {
             >
               Nombre {sortAsc ? '↑' : '↓'}
             </TableHead>
-            <TableHead className="w-[15%]">Tipo(s)</TableHead>
+            <TableHead className="w-[15%] ">Tipo(s)</TableHead>
             <TableHead className="w-[15%]">Experiencia</TableHead>
             <TableHead className="w-[10%]">Altura</TableHead>
             <TableHead className="w-[10%]">Peso</TableHead>
