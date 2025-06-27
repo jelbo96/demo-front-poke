@@ -10,7 +10,7 @@ export async function fetchPokemonList(): Promise<PokemonDetailed[]> {
   const { results } = await res.json();
 
   const data = await Promise.all(
-    results.map(async ({ name }) => {
+    results.map(async ({ name }: { name: string }) => {
       const [detailsRes, speciesRes] = await Promise.all([
         fetch(`https://pokeapi.co/api/v2/pokemon/${name}`, { signal }),
         fetch(`https://pokeapi.co/api/v2/pokemon-species/${name}`, { signal }),
@@ -25,7 +25,9 @@ export async function fetchPokemonList(): Promise<PokemonDetailed[]> {
         experience: details.base_experience,
         height: details.height,
         weight: details.weight,
-        types: details.types.map((t: any) => t.type.name),
+        types: details.types.map(
+          (t: { type: { name: string } }) => t.type.name
+        ),
         color: species.color.name,
       };
     })

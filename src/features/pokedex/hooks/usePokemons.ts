@@ -11,14 +11,17 @@ export function usePokemons() {
     staleTime: 1000 * 60 * 5,
   });
 
-  // Inicializa la lista Zustand si está vacía
   if (storedPokemonNames.length === 0 && pokemons.length > 0) {
-    setPokemons(pokemons.map((p) => p.name));
+    setPokemons(pokemons.map((p: PokemonDetailed) => p.name));
   }
 
-  // Filtra solo los pokemons que no fueron eliminados
-  const filteredPokemons = pokemons.filter((p) =>
-    storedPokemonNames.includes(p.name)
+  interface FilteredPokemon {
+    name: string;
+    [key: string]: unknown;
+  }
+
+  const filteredPokemons: FilteredPokemon[] = pokemons.filter(
+    (p: FilteredPokemon) => storedPokemonNames.includes(p.name)
   );
 
   return { pokemons: filteredPokemons, ...query };
